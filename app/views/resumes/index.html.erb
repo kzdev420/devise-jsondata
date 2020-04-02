@@ -1,0 +1,61 @@
+<% if !flash[:notice].blank? %>
+   <div class = "alert alert-info">
+      <%= flash[:notice] %>
+   </div>
+<% end %>
+
+<br />
+
+
+<% if user_signed_in? %>
+    <%= link_to 'Edit account', edit_user_registration_path, class: "btn btn-primary" %>
+    <%= link_to 'Sign out', destroy_user_session_path, :method=>'delete', class: "btn btn-primary" %>
+<% else %>
+    <%= link_to "Upload Resume", new_resume_path, class: "btn btn-primary" %>
+    <%= link_to 'Sign in', new_user_session_path, class: "btn btn-primary" %>
+    <%= link_to 'Sign up', new_user_registration_path, class: "btn btn-primary" %>
+<% end %>
+<% if user_signed_in? %>
+    <% if current_user.try(:admin?) %>
+        <%= link_to 'Users', users_path, class: "btn btn-primary" %>
+    <% end %>
+<% end %>
+
+<br />
+<br />
+
+<table class = "table table-bordered table-striped">
+   <thead>
+      <tr>
+         <th>Name</th>
+         <th>Download Link</th>
+         <th> </th>
+      </tr>
+   </thead>
+   
+   <tbody>
+      <% @resumes.each do |resume| %>
+         
+         <tr>
+            <td><%= resume.name %></td>
+            <td><%= link_to "Download Resume", resume.attachment_url %></td>
+            <td><%= button_to "Delete",  resume, method: :delete, class: "btn btn-danger", confirm: "Are you sure that you wish to delete #{resume.name}?" %></td>
+         </tr>
+         
+      <% end %>
+   </tbody>
+   
+</table>
+
+<table class = "table table-bordered table-striped">
+   
+       <% @user.each do |resume| %>
+           
+
+            <%= resume.email %>
+            <%= resume["experience_detail"] %>
+   
+           
+       <% end %>
+ 
+</table>
